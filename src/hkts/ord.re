@@ -1,6 +1,6 @@
 open Higher;
 
-type ordering = LT | LTE | EQ | GTE | GT;
+type ordering = LT | EQ | GT;
 
 class virtual ord_ 'f = {
   as _;
