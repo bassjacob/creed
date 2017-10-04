@@ -7,9 +7,6 @@
 
 /* /1* Js.log @@ foldMap (monoid_l ()) (foldable_l ()) (fun m (_: int) => m#mempty) (L.inj @@ Cons 1 Null); *1/ */
 
-/* /1* functor_l#fmap Js.log (L.inj (Cons 1 Null)); *1/ */
-/* /1* functor_o#fmap Js.log (O.inj (Some 1)); *1/ */
-
 /* /1* let foo: type f a b. functor_ f => (a => b) => app a f => app b f = fun f g a => f#fmap g a; *1/ */
 
 /* /1* Js.log @@ foo (functor_e ()) (fun x => x + 1) (E.inj (Right 1)); *1/ */
