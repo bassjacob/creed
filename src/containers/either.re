@@ -2,6 +2,10 @@ open Higher;
 
 open Functor;
 
+open Applicative;
+
+open Monad;
+
 type e 'a 'b =
   | Right 'a
   | Left 'b;
@@ -13,7 +17,7 @@ module E =
 
 let functor_e () => {
   as _;
-  inherit class functor_ _;
+  inherit class functor_ (app 'c E.t);
   pub fmap: 'a 'b .('a => 'b) => app 'a _ => app 'b _ =
     fun (type a b) => (
       fun f e =>
@@ -23,4 +27,26 @@ let functor_e () => {
         }:
         (a => b) => app a _ => app b _
     )
+};
+
+let applicative_e () => {
+  as _;
+  inherit (class applicative_ (app 'c E.t)) (functor_e ());
+  pub pure a => Right a |> E.inj;
+  pub apply f a =>
+    switch (E.prj f, E.prj a) {
+    | (Left x, _) => Left x |> E.inj
+    | (_, Left x) => Left x |> E.inj
+    | (Right f', Right a') => E.inj (Right (f' a'))
+    }
+};
+
+let monad_e () => {
+  as _;
+  inherit (class monad_ (app 'c E.t)) (applicative_e ());
+  pub bind f m =>
+    switch (E.prj m) {
+    | Left x => Left x |> E.inj
+    | Right x => f x
+    }
 };
