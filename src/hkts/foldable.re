@@ -14,22 +14,16 @@ open Higher;
 /*   product :: Num a => t a -> a */
 /*   Data.Foldable.fold :: Monoid m => t m -> m */
 
-class virtual foldable_ 'f = {
-  as self;
 
-  /* minimal interface */
-  pub virtual foldr: 'a 'b.('a => 'b => 'b) => 'b => app 'a 'f => 'b;
-
-  /* can override */
-  pub virtual foldl: 'a 'b.('b => 'a => 'b) => 'b => app 'a 'f => 'b;
-  pub foldl g => self#foldr (fun a b => g b a);
-
-  pub virtual null: 'a. app 'a 'f => bool;
-  pub null = self#foldr (fun _ _ => true) false;
-
-  pub virtual toList: 'a. app 'a 'f => list 'a;
-  pub toList = self#foldr (fun a b => [a, ...b]) [];
-
-  pub virtual length: 'a. app 'a 'f => int;
-  pub length = self#foldr (fun _ b => 1 + b) 0;
+class virtual foldable_ ('f) = {
+  as self; /* minimal interface */
+  pub virtual foldr: 'a 'b .(('a, 'b) => 'b, 'b, app('a, 'f)) => 'b; /* can override */
+  pub virtual foldl: 'a 'b .(('b, 'a) => 'b, 'b, app('a, 'f)) => 'b;
+  pub foldl = (g) => self#foldr((a, b) => g(b, a));
+  pub virtual null: 'a .app('a, 'f) => bool;
+  pub null = self#foldr((_, _) => true, false);
+  pub virtual toList: 'a .app('a, 'f) => list('a);
+  pub toList = self#foldr((a, b) => [a, ...b], []);
+  pub virtual length: 'a .app('a, 'f) => int;
+  pub length = self#foldr((_, b) => 1 + b, 0);
 };
