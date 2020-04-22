@@ -2,15 +2,16 @@
   "name": "creed",
   "version": "0.1.0",
   "scripts": {
-    "clean": "bsb -clean-world",
     "build": "bsb -make-world",
-    "watch": "bsb -make-world -w"
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world"
   },
   "keywords": [
     "BuckleScript"
   ],
+  "author": "",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "1.9.2"
+    "bs-platform": "^7.3.1"
   }
 }
